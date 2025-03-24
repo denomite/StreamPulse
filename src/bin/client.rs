@@ -54,7 +54,7 @@ async fn main() -> tokio::io::Result<()> {
     let all_tasks = futures::future::join_all(
         handles
             .into_iter()
-            .map(|handle| tokio::time::timeout(tokio::time::Duration::from_secs(5), handle)),
+            .map(|handle| tokio::time::timeout(tokio::time::Duration::from_secs(60), handle)),
     )
     .await;
 
@@ -62,7 +62,7 @@ async fn main() -> tokio::io::Result<()> {
         match result {
             Ok(Ok(bytes)) => total_bytes += bytes,
             Ok(Err(e)) => println!("Client {} task failed: {}", i, e),
-            Err(_) => println!("Client {} timed out", i),
+            Err(_) => println!("Client {} timed out wit {} bytes", i, total_bytes),
         }
     }
 
