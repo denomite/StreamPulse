@@ -5,16 +5,17 @@ use tokio::net::TcpListener;
 use tokio::sync::Semaphore;
 
 /*
-    Reduce Latency: Minize I/O overhead and unnecessary delays.
-    Memory Management: Avoid allocations and reuse resources.
-    Benchmark: Measure improvement to prove performance.
+    Run client in  terminal:
+    - cargo run --release --bin main
 */
+
 async fn run_server() -> tokio::io::Result<()> {
     let listener = TcpListener::bind("127.0.0.1:8080").await?;
     println!("Server running on 127.0.0.1:8080");
 
     /*
-    Councurrency tuning: Handle thousands of connections efficiently.
+    Councurrency tuning: Handle thousands of connections efficiently. Semaphore added to cap concurrent
+    cleints and prevent overload
     - Semaphore: Added Semaphore::new(1000) to cap concurrent connections at 1000.
     This prevents resource exhaustion(to many open sockets) while allowing high concurrency.
     - acquire_owned() ensures the permit lives with the spawned task, dropping automatically
@@ -32,7 +33,11 @@ async fn run_server() -> tokio::io::Result<()> {
         println!("New connection: {}", addr);
 
         tokio::spawn(async move {
+            // Memmory management: String reuse, avoid creating new string for each message
             let mut message = String::with_capacity(32);
+            /*
+            Buffer Writes (tokio::io::BufferWriter): This reduces system calls, lowering latency.
+             */
             let mut writer = BufWriter::new(socket);
 
             let result: Result<(), std::io::Error> = async {
@@ -56,7 +61,7 @@ async fn run_server() -> tokio::io::Result<()> {
             }
         });
     }
-    // Error handling: Kept robusting with ? and logging, ensuring staviltiy under load
+    // Error handling: Kept robusting with ? and logging, ensuring stabiltiy under load
 }
 
 #[tokio::main]
@@ -67,6 +72,7 @@ async fn main() -> tokio::io::Result<()> {
 /*
     Automated unit testing with tokio
     Simple test to verify the server responds
+    Run the test: cargo test
 */
 #[cfg(test)]
 mod tests {
@@ -80,7 +86,7 @@ mod tests {
         tokio::spawn(run_server());
 
         // Give the server a moment to start
-        tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+        tokio::time::sleep(tokio::time::Duration::from_millis(500)).await;
 
         // Connect to the server
         let mut stream = TcpStream::connect("127.0.0.1:8080").await.unwrap();

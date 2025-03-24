@@ -1,6 +1,6 @@
 /*
     Simple custom benchmark(Windows Friendly)
-    run client in another terminal:
+    Run client in another terminal:
     - cargo run --release --bin client
 */
 use std::time::Instant;
