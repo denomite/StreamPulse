@@ -5,10 +5,10 @@ It fetches live data from Finnhub’s API and broadcasts it to connected clients
 
 ## Features
 
-<ins>Real-Time Stock Streaming:</ins> Updates prices (e.g., AAPL at $219.68) every 5 seconds using Finnhub’s API.  
-<ins>High Concurrency:</ins> Handles thousands of clients via Tokio’s async runtime and broadcast channels.  
-<ins>Low Latency:</ins> Delivers data with ~5s fetch intervals, extensible to sub-second with WebSocket.  
-<ins>Scalable Design:</ins> One API call serves all clients, optimized for free-tier limits (60 calls/min).
+<ins>Real-Time Stock Streaming</ins>: Updates prices (e.g., AAPL at $219.68) every 5 seconds using Finnhub’s API.  
+<ins>High Concurrency</ins>: Handles thousands of clients via Tokio’s async runtime and broadcast channels.  
+<ins>Low Latency</ins>: Delivers data with ~5s fetch intervals, extensible to sub-second with WebSocket.  
+<ins>Scalable Design</ins>: One API call serves all clients, optimized for free-tier limits (60 calls/min).
 
 ## Tech stack
 
@@ -20,8 +20,9 @@ It fetches live data from Finnhub’s API and broadcasts it to connected clients
 
 ## Project development
 
-1. **Foundation & Server Design**  
-   <ins>Objective: Build a TCP server for real-time data streaming.</ins>
+1. **Foundation & Server Design**
+
+    <ins>Objective: Build a TCP server for real-time data streaming.</ins>
 
     Implementation:  
      Initialized with cargo new realtime_server --bin.  
@@ -32,7 +33,7 @@ It fetches live data from Finnhub’s API and broadcasts it to connected clients
 
     <ins>Objective: Scale to multiple clients efficiently.</ins>
 
-    Implementation:
+    Implementation:  
     Employed tokio::spawn and Semaphore (1000 connections) for parallel client handling.
     Added tokio::sync::broadcast to share one API fetch with all clients.
 
@@ -64,11 +65,10 @@ It fetches live data from Finnhub’s API and broadcasts it to connected clients
 
 ### Real-World Application
 
-<ins>Real-World Applications</ins>  
 For the average person, this server could power:  
-Investment Trackers: Live portfolio updates on your phone (e.g., "AAPL: $219.68").  
-Price Alerts: Notifications when stocks hit targets (e.g., "Buy AAPL at $215").  
-Budgeting Tools: Real-time net worth with stock holdings.
+**Investment Trackers**: Live portfolio updates on your phone (e.g., "AAPL: $219.68").  
+**Price Alerts**: Notifications when stocks hit targets (e.g., "Buy AAPL at $215").  
+**Budgeting Tools**: Real-time net worth with stock holdings.
 
 ### Performance Metrics
 
