@@ -11,8 +11,8 @@ Scalable Design: One API call serves all clients, optimized for free-tier limits
 
 ### Tech stack
 
-**Rust**: Core language for speed, safety, and zero-cost abstractions.
-**Tokio**: Async runtime for concurrent I/O and task management.
-**Reqwest**: HTTP client for fetching Finnhub data.
-**Serde**: JSON parsing for stock quotes.
+**Rust**: Core language for speed, safety, and zero-cost abstractions.  
+**Tokio**: Async runtime for concurrent I/O and task management.  
+**Reqwest**: HTTP client for fetching Finnhub data.  
+**Serde**: JSON parsing for stock quotes.  
 **Finnhub API**: Real-time stock price source.
